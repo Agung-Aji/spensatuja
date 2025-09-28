@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>OSIS - Website Resmi (Demo)</title>
+  <style>
+    :root{--blue:#004999;--light:#f6f8fb;--card:#ffffff}
+    body{font-family:Inter,Segoe UI,Arial;background:var(--light);color:#111;margin:0}
+    header{background:linear-gradient(90deg,var(--blue),#0066cc);color:white;padding:18px}
+    .container{max-width:1100px;margin:22px auto;padding:0 16px}
+    nav{display:flex;gap:12px;align-items:center}
+    nav a{color:white;text-decoration:none;padding:8px 12px;border-radius:6px}
+    nav a:hover{background:rgba(255,255,255,0.08)}
+    .hero{display:flex;gap:20px;align-items:center}
+    .hero img{width:88px;height:88px;object-fit:cover;border-radius:8px;border:3px solid rgba(255,255,255,0.12)}
+    .card{background:var(--card);padding:14px;border-radius:10px;box-shadow:0 6px 18px rgba(10,20,40,0.06);margin-bottom:16px}
+    .grid{display:grid;grid-template-columns:1fr 320px;gap:18px}
+    .list{display:flex;flex-direction:column;gap:12px}
+    .member{display:flex;gap:12px;align-items:center}
+    .member img{width:84px;height:84px;object-fit:cover;border-radius:6px}
+    label{font-weight:600}
+    input,textarea,select,button{font:inherit}
+    .muted{color:#666;font-size:0.9rem}
+    .btn{display:inline-block;padding:8px 12px;border-radius:8px;border:0;cursor:pointer}
+    .btn-primary{background:var(--blue);color:white}
+    .btn-ghost{background:transparent;border:1px solid #ddd}
+    .top-actions{display:flex;gap:8px;justify-content:flex-end}
+    footer{margin:32px 0 60px;text-align:center;color:#555}
+    /* modal */
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center}
+    .modal .box{width:720px;max-width:95%;background:white;padding:18px;border-radius:10px}
+    .row{display:flex;gap:12px}
+    .col{flex:1}
+    .small{font-size:0.9rem}
+    .field{display:flex;flex-direction:column;gap:6px}
+    .toolbar{display:flex;gap:8px;align-items:center}
+    .note{background:#fff3cd;border:1px solid #ffeeba;padding:8px;border-radius:6px}
+    @media(max-width:880px){.grid{grid-template-columns:1fr}.hero{flex-direction:column;align-items:flex-start}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div style="flex:1">
+          <a href="#" id="logo" style="font-weight:700;font-size:1.1rem">OSIS SMP - Demo</a>
+        </div>
+        <div>
+          <a href="#home" class="navlink">Home</a>
+          <a href="#subbidang" class="navlink">Sub. Bidang</a>
+          <a href="#dokumentasi" class="navlink">Dokumentasi</a>
+          <a href="#informasi" class="navlink">Informasi</a>
+          <button class="btn btn-ghost" id="btn-login">Admin</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HOME -->
+    <section id="home" class="card">
+      <div class="hero">
+        <img id="school-photo" src="" alt="Foto Sekolah" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=200 height=120><rect width=200 height=120 fill=\'%23004999\'/><text x=10 y=70 fill=white font-size=18>Foto Sekolah</text></svg>'">
+        <div>
+          <h2 id="school-name">OSIS SMP - Nama Sekolah</h2>
+          <p class="muted" id="school-desc">Situs resmi organisasi OSIS — perubahan cepat oleh admin.</p>
+        </div>
+        <div style="margin-left:auto;text-align:right">
+          <div class="top-actions">
+            <button class="btn btn-primary" id="edit-home" title="Edit Home (Admin)">Edit Home</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid" style="margin-top:16px">
+        <div>
+          <div class="card">
+            <h3>Visi</h3>
+            <p id="visi" class="small">-</p>
+          </div>
+
+          <div class="card">
+            <h3>Misi</h3>
+            <p id="misi" class="small">-</p>
+          </div>
+
+          <div class="card">
+            <h3>Anggota OSIS</h3>
+            <div id="members-list" class="list"></div>
+          </div>
+        </div>
+
+        <aside>
+          <div class="card">
+            <h4>Kontrol Admin</h4>
+            <div class="small">
+              Login sebagai admin untuk mengedit semua konten. Data tersimpan di browser (localStorage). Gunakan tombol Export untuk backup.
+            </div>
+            <div style="margin-top:10px" class="toolbar">
+              <button class="btn btn-ghost" id="export-json">Export JSON</button>
+              <button class="btn btn-ghost" id="import-json">Import JSON</button>
+            </div>
+
+            <div style="margin-top:12px">
+              <label class="small">Ubah kata sandi admin</label>
+              <input id="new-password" placeholder="password baru" />
+              <button class="btn btn-primary" id="change-pass">Simpan</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h4>Petunjuk Cepat</h4>
+            <ol class="small">
+              <li>Login -> Edit -> Simpan</li>
+              <li>Gunakan Export untuk backup & Import untuk restore</li>
+              <li>Foto ukuran 4R disarankan (sekitar 6x9 cm). Sistem skala otomatis.</li>
+            </ol>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- SUB BIDANG -->
+    <section id="subbidang" class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h3>Sub Bidang</h3>
+        <button class="btn btn-primary" id="add-bidang">Tambah Sub Bidang (Admin)</button>
+      </div>
+      <div id="bidangs" style="margin-top:12px"></div>
+    </section>
+
+    <!-- DOKUMENTASI -->
+    <section id="dokumentasi" class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h3>Dokumentasi Kegiatan</h3>
+        <button class="btn btn-primary" id="add-activity">Tambah Dokumentasi (Admin)</button>
+      </div>
+      <div id="activities" style="margin-top:12px"></div>
+    </section>
+
+    <!-- INFORMASI -->
+    <section id="informasi" class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h3>Informasi</h3>
+        <button class="btn btn-primary" id="add-info">Tambah Informasi (Admin)</button>
+      </div>
+      <div id="infos" style="margin-top:12px"></div>
+    </section>
+
+    <footer>
+      &copy; <span id="year"></span> OSIS - Demo. Dibuat untuk keperluan pembelajaran.
+    </footer>
+  </main>
+
+  <!-- Modal Editor (used for many things) -->
+  <div class="modal" id="modal">
+    <div class="box">
+      <h3 id="modal-title">Editor</h3>
+      <div id="modal-body"></div>
+      <div style="margin-top:12px;text-align:right">
+        <button class="btn btn-ghost" id="modal-cancel">Batal</button>
+        <button class="btn btn-primary" id="modal-save">Simpan</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Simple Login Modal -->
+  <div class="modal" id="modal-login">
+    <div class="box">
+      <h3>Login Admin</h3>
+      <div class="field">
+        <label>Kata sandi</label>
+        <input id="input-pass" type="password" />
+      </div>
+      <div style="margin-top:12px;text-align:right">
+        <button class="btn btn-ghost" id="login-cancel">Batal</button>
+        <button class="btn btn-primary" id="login-do">Masuk</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Simple data model saved in localStorage
+    const STORAGE_KEY = 'osis_site_v1';
+    const PASS_KEY = 'osis_pass_v1';
+
+    const defaultData = {
+      schoolName: 'OSIS SMPN 1',
+      schoolPhoto: '',
+      schoolDesc: 'Situs resmi OSIS',
+      visi: 'Mewujudkan generasi pemimpin yang berkarakter dan berprestasi.',
+      misi: '1. Mengembangkan potensi siswa.\n2. Menumbuhkan jiwa kepemimpinan.\n3. Menjaga kebersihan dan kesehatan lingkungan sekolah.',
+      members: [
+        {id:genId(),name:'Ketua OSIS',role:'Koordinator',photo:'',birth:'2008-01-01',moto:'Bersama kita bisa',cita:'Guru'},
+        {id:genId(),name:'Wakil Ketua',role:'Anggota',photo:'',birth:'2008-05-05',moto:'Bekerja keras',cita:'Insinyur'}
+      ],
+      bidangs: [
+        {id:genId(),title:'Bidang Bela Negara',people:[]},
+        {id:genId(),title:'Bidang Keagamaan',people:[]},
+        {id:genId(),title:'Bidang Seni & Olahraga',people:[]},
+        {id:genId(),title:'Bidang Kesehatan & Lingkungan',people:[]},
+        {id:genId(),title:'Bidang TIK',people:[]}
+      ],
+      activities:[],
+      infos:[]
+    };
+
+    function genId(){return 'id_'+Math.random().toString(36).slice(2,9)}
+
+    function load(){
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return JSON.parse(JSON.stringify(defaultData));
+      try{ return JSON.parse(raw);}catch(e){return JSON.parse(JSON.stringify(defaultData));}
+    }
+    function save(data){localStorage.setItem(STORAGE_KEY,JSON.stringify(data));}
+
+    // Password default
+    if(!localStorage.getItem(PASS_KEY)) localStorage.setItem(PASS_KEY, 'admin123');
+
+    let data = load();
+    let isAdmin = false;
+
+    // UI refs
+    const membersList = document.getElementById('members-list');
+    const schoolPhoto = document.getElementById('school-photo');
+    const schoolName = document.getElementById('school-name');
+    const schoolDesc = document.getElementById('school-desc');
+    const visiEl = document.getElementById('visi');
+    const misiEl = document.getElementById('misi');
+    const bidangsEl = document.getElementById('bidangs');
+    const activitiesEl = document.getElementById('activities');
+    const infosEl = document.getElementById('infos');
+    const yearEl = document.getElementById('year'); yearEl.textContent = new Date().getFullYear();
+
+    function render(){
+      schoolPhoto.src = data.schoolPhoto || '';
+      schoolName.textContent = data.schoolName || 'OSIS';
+      schoolDesc.textContent = data.schoolDesc || '';
+      visiEl.textContent = data.visi || '';
+      misiEl.textContent = data.misi || '';
+
+      // members
+      membersList.innerHTML='';
+      data.members.forEach(m=>{
+        const div = document.createElement('div'); div.className='member card';
+        div.innerHTML = `
+          <img src="${m.photo||''}" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=200 height=200><rect width=200 height=200 fill=\\'%23ddd\\'/><text x=10 y=100 fill=\\'%23666\\' font-size=14>No Photo</text></svg>'">
+          <div style=\"flex:1\"> <strong>${m.name}</strong><div class=\"muted\">${m.role} • ${m.birth}</div><div class=\"small\">Moto: ${m.moto}</div><div class=\"small\">Cita-cita: ${m.cita}</div></div>
+          <div style=\"display:flex;flex-direction:column;gap:8px\"> <button class=\"btn btn-ghost\" onclick=\"openEditMember('${m.id}')\">Edit</button> <button class=\"btn btn-ghost\" onclick=\"deleteMember('${m.id}')\">Hapus</button></div>
+        `;
+        membersList.appendChild(div);
+      });
+
+      // bidangs
+      bidangsEl.innerHTML='';
+      data.bidangs.forEach(b=>{
+        const box = document.createElement('div'); box.className='card';
+        box.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center"><strong>${b.title}</strong>
+          <div><button class='btn btn-ghost' onclick="editBidang('${b.id}')">Edit</button> <button class='btn btn-ghost' onclick="deleteBidang('${b.id}')">Hapus</button></div></div>`;
+        const ppl = document.createElement('div'); ppl.style.marginTop='10px';
+        if(b.people.length===0) ppl.innerHTML='<div class="muted">Belum ada anggota</div>';
+        b.people.forEach(p=>{
+          const m = document.createElement('div'); m.className='member';
+          m.innerHTML = `<img src='${p.photo||''}' onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=200 height=200><rect width=200 height=200 fill=\\'%23ddd\\'/><text x=10 y=100 fill=\\'%23666\\' font-size=14>No Photo</text></svg>'"><div style='flex:1'><strong>${p.name}</strong><div class='muted'>${p.role} • ${p.birth}</div></div><div style='display:flex;flex-direction:column;gap:6px'><button class='btn btn-ghost' onclick="editPerson('${b.id}','${p.id}')">Edit</button><button class='btn btn-ghost' onclick="deletePerson('${b.id}','${p.id}')">Hapus</button></div>`;
+          ppl.appendChild(m);
+        });
+        box.appendChild(ppl);
+        bidangsEl.appendChild(box);
+      });
+
+      // activities
+      activitiesEl.innerHTML='';
+      if(data.activities.length===0) activitiesEl.innerHTML='<div class="muted">Belum ada dokumentasi</div>';
+      data.activities.forEach(a=>{
+        const item = document.createElement('div'); item.className='card';
+        item.innerHTML = `<div style='display:flex;gap:12px;align-items:center'><img src='${a.photo||''}' style='width:120px;height:80px;object-fit:cover' onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=200 height=120><rect width=200 height=120 fill=\\'%23eee\\'/><text x=10 y=60 fill=\\'%23666\\' font-size=12>No Photo</text></svg>'"><div style='flex:1'><strong>${a.title}</strong><div class='muted'>${a.date}</div><p class='small'>${a.desc}</p></div><div style='display:flex;flex-direction:column;gap:8px'><button class='btn btn-ghost' onclick="editActivity('${a.id}')">Edit</button><button class='btn btn-ghost' onclick="deleteActivity('${a.id}')">Hapus</button></div></div>`;
+        activitiesEl.appendChild(item);
+      });
+
+      // infos
+      infosEl.innerHTML='';
+      if(data.infos.length===0) infosEl.innerHTML='<div class="muted">Belum ada informasi</div>';
+      data.infos.forEach(i=>{
+        const item = document.createElement('div'); item.className='card';
+        item.innerHTML = `<div style='display:flex;justify-content:space-between;align-items:center'><div><strong>${i.title}</strong><div class='muted'>${i.date}</div><p class='small'>${i.desc}</p></div><div style='display:flex;flex-direction:column;gap:8px'><button class='btn btn-ghost' onclick="editInfo('${i.id}')">Edit</button><button class='btn btn-ghost' onclick="deleteInfo('${i.id}')">Hapus</button></div></div>`;
+        infosEl.appendChild(item);
+      });
+
+      save(data);
+    }
+
+    // Modal helpers
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalBody = document.getElementById('modal-body');
+    const modalSave = document.getElementById('modal-save');
+    const modalCancel = document.getElementById('modal-cancel');
+
+    function openModal(title,bodyHtml, onSave){
+      modalTitle.textContent = title; modalBody.innerHTML = bodyHtml; modal.style.display='flex';
+      modalSave.onclick = ()=>{ onSave(); modal.style.display='none'; render(); };
+      modalCancel.onclick = ()=>{ modal.style.display='none'; };
+    }
+
+    // Admin login
+    document.getElementById('btn-login').onclick = ()=>{ document.getElementById('modal-login').style.display='flex'; };
+    document.getElementById('login-cancel').onclick = ()=>document.getElementById('modal-login').style.display='none';
+    document.getElementById('login-do').onclick = ()=>{
+      const v = document.getElementById('input-pass').value;
+      if(v === localStorage.getItem(PASS_KEY)){
+        isAdmin = true; document.getElementById('modal-login').style.display='none'; alert('Berhasil login sebagai admin'); render();
+      } else alert('Kata sandi salah');
+    };
+
+    // Edit Home
+    document.getElementById('edit-home').onclick = ()=>{
+      if(!isAdmin){ alert('Silakan login sebagai admin dulu'); return; }
+      openModal('Edit Home', `
+        <div class='field'><label>Nama Sekolah</label><input id='f_schoolName' value="${escapeHtml(data.schoolName)}" /></div>
+        <div class='field'><label>Deskripsi singkat</label><textarea id='f_schoolDesc'>${escapeHtml(data.schoolDesc)}</textarea></div>
+        <div class='field'><label>Visi</label><textarea id='f_visi'>${escapeHtml(data.visi)}</textarea></div>
+        <div class='field'><label>Misi</label><textarea id='f_misi'>${escapeHtml(data.misi)}</textarea></div>
+        <div class='field'><label>Foto Sekolah (upload)</label><input id='f_schoolPhoto' type='file' accept='image/*' /></div>
+      `, ()=>{
+        data.schoolName = document.getElementById('f_schoolName').value;
+        data.schoolDesc = document.getElementById('f_schoolDesc').value;
+        data.visi = document.getElementById('f_visi').value;
+        data.misi = document.getElementById('f_misi').value;
+        const f = document.getElementById('f_schoolPhoto');
+        if(f.files&&f.files[0]){
+          const reader = new FileReader();
+          reader.onload = e=>{ data.schoolPhoto = e.target.result; save(data); render(); };
+          reader.readAsDataURL(f.files[0]);
+        }
+        save(data);
+      });
+    };
+
+    // add bidang
+    document.getElementById('add-bidang').onclick = ()=>{
+      if(!isAdmin){ alert('Login admin dulu'); return; }
+      openModal('Tambah Sub Bidang', `<div class='field'><label>Nama Sub Bidang</label><input id='f_bidang' placeholder='Contoh: Bidang TIK' /></div>`, ()=>{
+        const t = document.getElementById('f_bidang').value.trim(); if(!t) return;
+        data.bidangs.push({id:genId(),title:t,people:[]}); save(data);
+      });
+    };
+
+    function editBidang(id){ if(!isAdmin){alert('Login admin dulu');return;} const b=data.bidangs.find(x=>x.id===id); openModal('Edit Bidang', `<div class='field'><label>Nama</label><input id='f_bt' value='${escapeHtml(b.title)}' /></div><div class='field'><label>Tambah Anggota</label><input id='new_person_name' placeholder='Nama' /><select id='new_person_role'><option>Koordinator</option><option>Anggota</option></select><input id='new_person_birth' type='date' /><input id='new_person_moto' placeholder='Moto' /><input id='new_person_cita' placeholder='Cita-cita' /><input id='new_person_photo' type='file' accept='image/*' />
+`, ()=>{
+        b.title = document.getElementById('f_bt').value;
+        // add new person
+        const name = document.getElementById('new_person_name').value.trim();
+        if(name){
+          const p = {id:genId(),name,role:document.getElementById('new_person_role').value,birth:document.getElementById('new_person_birth').value || '',moto:document.getElementById('new_person_moto').value || '',cita:document.getElementById('new_person_cita').value || '',photo:''};
+          const f = document.getElementById('new_person_photo');
+          if(f.files&&f.files[0]){
+            const reader = new FileReader(); reader.onload=e=>{ p.photo=e.target.result; b.people.push(p); save(data); render(); };
+            reader.readAsDataURL(f.files[0]);
+          } else { b.people.push(p); }
+        }
+        save(data);
+      }); }
+
+    function deleteBidang(id){ if(!isAdmin){alert('Login admin dulu');return;} if(!confirm('Hapus sub bidang ini?')) return; data.bidangs = data.bidangs.filter(x=>x.id!==id); save(data); render(); }
+
+    // person edit
+    function editPerson(bid,pid){ if(!isAdmin){alert('Login admin dulu');return;} const b=data.bidangs.find(x=>x.id===bid); const p=b.people.find(x=>x.id===pid);
+      openModal('Edit Anggota', `<div class='field'><label>Nama</label><input id='p_name' value='${escapeHtml(p.name)}' /></div><div class='field'><label>Peran</label><select id='p_role'><option ${p.role==='Koordinator'?'selected':''}>Koordinator</option><option ${p.role==='Anggota'?'selected':''}>Anggota</option></select></div><div class='field'><label>Tanggal Lahir</label><input id='p_birth' type='date' value='${p.birth}' /></div><div class='field'><label>Moto</label><input id='p_moto' value='${escapeHtml(p.moto)}' /></div><div class='field'><label>Cita-cita</label><input id='p_cita' value='${escapeHtml(p.cita)}' /></div><div class='field'><label>Ganti Foto</label><input id='p_photo' type='file' accept='image/*' /></div>`, ()=>{
+        p.name=document.getElementById('p_name').value; p.role=document.getElementById('p_role').value; p.birth=document.getElementById('p_birth').value; p.moto=document.getElementById('p_moto').value; p.cita=document.getElementById('p_cita').value;
+        const f = document.getElementById('p_photo'); if(f.files&&f.files[0]){ const r=new FileReader(); r.onload=e=>{ p.photo=e.target.result; save(data); render(); }; r.readAsDataURL(f.files[0]); }
+        save(data);
+      }); }
+
+    function deletePerson(bid,pid){ if(!isAdmin){alert('Login admin dulu');return;} if(!confirm('Hapus anggota?')) return; const b=data.bidangs.find(x=>x.id===bid); b.people = b.people.filter(x=>x.id!==pid); save(data); render(); }
+
+    // Member (home list) edit
+    function openEditMember(id){ if(!isAdmin){alert('Login admin dulu');return;} const m = data.members.find(x=>x.id===id);
+      openModal('Edit Anggota OSIS', `<div class='field'><label>Nama</label><input id='m_name' value='${escapeHtml(m.name)}' /></div><div class='field'><label>Peran</label><select id='m_role'><option ${m.role==='Koordinator'?'selected':''}>Koordinator</option><option ${m.role==='Anggota'?'selected':''}>Anggota</option></select></div><div class='field'><label>Tanggal Lahir</label><input id='m_birth' type='date' value='${m.birth}' /></div><div class='field'><label>Moto</label><input id='m_moto' value='${escapeHtml(m.moto)}' /></div><div class='field'><label>Cita-cita</label><input id='m_cita' value='${escapeHtml(m.cita)}' /></div><div class='field'><label>Ganti Foto</label><input id='m_photo' type='file' accept='image/*' /></div>`, ()=>{
+        m.name=document.getElementById('m_name').value; m.role=document.getElementById('m_role').value; m.birth=document.getElementById('m_birth').value; m.moto=document.getElementById('m_moto').value; m.cita=document.getElementById('m_cita').value; const f=document.getElementById('m_photo'); if(f.files&&f.files[0]){ const r=new FileReader(); r.onload=e=>{ m.photo=e.target.result; save(data); render(); }; r.readAsDataURL(f.files[0]); } save(data);
+      }); }
+
+    function deleteMember(id){ if(!isAdmin){alert('Login admin dulu');return;} if(!confirm('Hapus anggota?')) return; data.members = data.members.filter(x=>x.id!==id); save(data); render(); }
+
+    // activities
+    document.getElementById('add-activity').onclick = ()=>{ if(!isAdmin){alert('Login admin dulu');return;} openModal('Tambah Dokumentasi', `<div class='field'><label>Judul</label><input id='a_title' /></div><div class='field'><label>Tanggal</label><input id='a_date' type='date' /></div><div class='field'><label>Deskripsi</label><textarea id='a_desc'></textarea></div><div class='field'><label>Foto</label><input id='a_photo' type='file' accept='image/*' /></div>`, ()=>{
+      const a={id:genId(),title:document.getElementById('a_title').value,date:document.getElementById('a_date').value,desc:document.getElementById('a_desc').value,photo:''}; const f=document.getElementById('a_photo'); if(f.files&&f.files[0]){ const r=new FileReader(); r.onload=e=>{ a.photo=e.target.result; data.activities.unshift(a); save(data); render(); }; r.readAsDataURL(f.files[0]); } else { data.activities.unshift(a); save(data); }
+    }); };
+
+    function editActivity(id){ if(!isAdmin){alert('Login admin dulu');return;} const a=data.activities.find(x=>x.id===id); openModal('Edit Dokumentasi', `<div class='field'><label>Judul</label><input id='ea_title' value='${escapeHtml(a.title)}' /></div><div class='field'><label>Tanggal</label><input id='ea_date' type='date' value='${a.date}' /></div><div class='field'><label>Deskripsi</label><textarea id='ea_desc'>${escapeHtml(a.desc)}</textarea></div><div class='field'><label>Ganti Foto</label><input id='ea_photo' type='file' accept='image/*' /></div>`, ()=>{ a.title=document.getElementById('ea_title').value; a.date=document.getElementById('ea_date').value; a.desc=document.getElementById('ea_desc').value; const f=document.getElementById('ea_photo'); if(f.files&&f.files[0]){ const r=new FileReader(); r.onload=e=>{ a.photo=e.target.result; save(data); render(); }; r.readAsDataURL(f.files[0]); } save(data); }); }
+    function deleteActivity(id){ if(!isAdmin){alert('Login admin dulu');return;} if(!confirm('Hapus dokumentasi?')) return; data.activities = data.activities.filter(x=>x.id!==id); save(data); render(); }
+
+    // infos
+    document.getElementById('add-info').onclick = ()=>{ if(!isAdmin){alert('Login admin dulu');return;} openModal('Tambah Informasi', `<div class='field'><label>Judul</label><input id='i_title' /></div><div class='field'><label>Tanggal</label><input id='i_date' type='date' /></div><div class='field'><label>Deskripsi</label><textarea id='i_desc'></textarea></div>`, ()=>{ const it={id:genId(),title:document.getElementById('i_title').value,date:document.getElementById('i_date').value,desc:document.getElementById('i_desc').value}; data.infos.unshift(it); save(data); }); };
+    function editInfo(id){ if(!isAdmin){alert('Login admin dulu');return;} const it=data.infos.find(x=>x.id===id); openModal('Edit Informasi', `<div class='field'><label>Judul</label><input id='ii_title' value='${escapeHtml(it.title)}' /></div><div class='field'><label>Tanggal</label><input id='ii_date' type='date' value='${it.date}' /></div><div class='field'><label>Deskripsi</label><textarea id='ii_desc'>${escapeHtml(it.desc)}</textarea></div>`, ()=>{ it.title=document.getElementById('ii_title').value; it.date=document.getElementById('ii_date').value; it.desc=document.getElementById('ii_desc').value; save(data); }); }
+    function deleteInfo(id){ if(!isAdmin){alert('Login admin dulu');return;} if(!confirm('Hapus informasi?')) return; data.infos = data.infos.filter(x=>x.id!==id); save(data); render(); }
+
+    // export/import
+    document.getElementById('export-json').onclick = ()=>{
+      const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href=url; a.download='osis_data.json'; a.click(); URL.revokeObjectURL(url);
+    };
+    document.getElementById('import-json').onclick = ()=>{
+      if(!isAdmin){alert('Login admin dulu');return;} const inp=document.createElement('input'); inp.type='file'; inp.accept='.json,application/json'; inp.onchange=e=>{ const f=e.target.files[0]; const r=new FileReader(); r.onload=ev=>{ try{ const parsed=JSON.parse(ev.target.result); data=parsed; save(data); render(); alert('Import berhasil'); }catch(er){alert('File tidak valid');}}; r.readAsText(f); }; inp.click();
+    };
+
+    // change pass
+    document.getElementById('change-pass').onclick = ()=>{
+      if(!isAdmin){alert('Login admin dulu');return;} const p = document.getElementById('new-password').value.trim(); if(!p) return alert('Masukkan password baru'); localStorage.setItem(PASS_KEY,p); alert('Password diubah'); document.getElementById('new-password').value='';
+    };
+
+    // utilities
+    function escapeHtml(s){ if(!s) return ''; return s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll("\"","&quot;"); }
+
+    // initial render
+    render();
+
+    // close modals on outside click
+    document.querySelectorAll('.modal').forEach(m=>{ m.addEventListener('click', e=>{ if(e.target===m) m.style.display='none'; }); });
+
+    // Expose some functions for inline onclick
+    window.openEditMember = openEditMember;
+    window.deleteMember = deleteMember;
+    window.editBidang = editBidang;
+    window.deleteBidang = deleteBidang;
+    window.editPerson = editPerson;
+    window.deletePerson = deletePerson;
+    window.editActivity = editActivity;
+    window.deleteActivity = deleteActivity;
+    window.editInfo = editInfo;
+    window.deleteInfo = deleteInfo;
+
+  </script>
+</body>
+</html>
