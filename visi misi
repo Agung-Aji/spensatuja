@@ -1,0 +1,49 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
+function CandidateCard({ candidate }) {
+  return (
+    <div className="bg-white shadow-lg rounded-lg p-4 flex flex-col items-center">
+      <img
+        src={candidate.photoUrl || "/default-avatar.png"}
+        alt={candidate.name}
+        className="w-32 h-32 rounded-full object-cover mb-3"
+      />
+      <h2 className="text-xl font-semibold">{candidate.name}</h2>
+      <h3 className="text-gray-600">{candidate.partner}</h3>
+      <div className="mt-3 w-full">
+        <h4 className="font-bold">Visi</h4>
+        <p className="text-gray-700">{candidate.vision}</p>
+        <h4 className="font-bold mt-2">Misi</h4>
+        <ul className="list-disc pl-5 text-gray-700">
+          {candidate.mission?.split("\n").map((m, idx) => <li key={idx}>{m}</li>)}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [candidates, setCandidates] = useState([]);
+
+  useEffect(() => {
+    axios.get("/api/candidates").then((res) => setCandidates(res.data));
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-indigo-200 py-10">
+      <div className="container mx-auto">
+        <h1 className="text-3xl font-bold text-center mb-8 text-indigo-800">
+          Visi & Misi Calon Ketua dan Wakil OSIS
+        </h1>
+        <div className="grid md:grid-cols-3 gap-8">
+          {candidates.map((c) => (
+            <CandidateCard candidate={c} key={c.id} />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;
